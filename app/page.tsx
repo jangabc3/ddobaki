@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function OnboardingPage() {
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
@@ -31,9 +33,9 @@ export default function OnboardingPage() {
           ))}
         </div>
 
-        <button className="w-full h-[50px] rounded-2xl bg-ink text-white font-bold text-sm">
+        <Link href="/home" className="w-full h-[50px] rounded-2xl bg-ink text-white font-bold text-sm flex items-center justify-center">
           시작할게요
-        </button>
+        </Link>
         <button className="text-xs text-inksoft font-semibold text-center">
           개인정보 처리방침 보기
         </button>
