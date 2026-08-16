@@ -39,4 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-backend/
+
+# backend (Spring Boot)
+backend/target/
+backend/.mvn/
+backend/src/main/resources/application.properties
