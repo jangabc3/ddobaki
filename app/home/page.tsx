@@ -28,16 +28,16 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex flex-col gap-2.5">
-                    <button className="w-full h-[50px] rounded-2xl bg-ink text-white font-bold text-sm">
+                    <Link href="/confirm" className="w-full h-[50px] rounded-2xl bg-ink text-white font-bold text-sm flex items-center justify-center">
                         사진에서 가져오기
-                    </button>
-                    <button className="w-full h-[50px] rounded-2xl bg-white border border-line font-bold text-sm flex items-center justify-center gap-2">
+                    </Link>
+                    <Link href="/confirm" className="w-full h-[50px] rounded-2xl bg-white border border-line font-bold text-sm flex items-center justify-center gap-2">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                             <path d="M4 8H7L9 5H15L17 8H20V19H4V8Z" stroke="#14171B" strokeWidth="1.6" strokeLinejoin="round" />
                             <circle cx="12" cy="13" r="3.2" stroke="#14171B" strokeWidth="1.6" />
                         </svg>
                         카메라로 찍기
-                    </button>
+                    </Link>
                 </div>
 
                 <Link href="/history" className="flex items-center justify-between bg-white border border-line rounded-2xl px-3.5 py-3">
