@@ -1,6 +1,16 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function ConfirmPage() {
+    const [text, setText] = useState<string | null>(null);
+
+    useEffect(() => {
+        const saved = sessionStorage.getItem("ddobaki_masked_text");
+        setText(saved);
+    }, []);
+
     return (
         <main className="min-h-screen flex items-center justify-center p-6">
             <div className="w-full max-w-sm bg-white rounded-3xl p-6 flex flex-col gap-4">
@@ -13,44 +23,24 @@ export default function ConfirmPage() {
                     <div className="text-[15px] font-bold">개인정보 확인</div>
                 </div>
 
-                <div className="bg-white border border-line rounded-2xl p-4">
+                <div className="bg-white border border-line rounded-2xl p-4 max-h-64 overflow-y-auto">
                     <div className="text-[13px] font-extrabold text-center pb-3 border-b border-dashed border-line mb-3">
-                        건강보험료 납부 안내
+                        인식된 문서 내용
                     </div>
-                    <div className="flex justify-between text-xs py-1">
-                        <span className="text-muted font-semibold">납부 기한</span>
-                        <span className="font-bold">2026. 8. 31.</span>
-                    </div>
-                    <div className="flex justify-between text-xs py-1">
-                        <span className="text-muted font-semibold">납부 금액</span>
-                        <span className="font-bold">132,400원</span>
-                    </div>
-                    <div className="flex justify-between text-xs py-1">
-                        <span className="text-muted font-semibold">납부 대상</span>
-                        <span className="font-bold">지역가입자</span>
-                    </div>
-                    <div className="flex justify-between text-xs py-1 pb-3 border-b border-dashed border-line mb-1">
-                        <span className="text-muted font-semibold">납부 방법</span>
-                        <span className="font-bold">은행, 카드, 인터넷지로 등</span>
-                    </div>
-
-                    <div className="flex justify-between items-center text-xs py-2">
-                        <span className="text-muted font-semibold w-14">이름</span>
-                        <span className="bg-ink text-white font-bold rounded-md px-2.5 py-1 text-[11.5px]">홍●동</span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs py-2">
-                        <span className="text-muted font-semibold w-14">주민번호</span>
-                        <span className="bg-ink text-white font-bold rounded-md px-2.5 py-1 text-[11.5px]">●●●●●●-●●●●●●●</span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs py-2">
-                        <span className="text-muted font-semibold w-14">계좌번호</span>
-                        <span className="bg-ink text-white font-bold rounded-md px-2.5 py-1 text-[11.5px]">●●●-●●-●●●●●●</span>
-                    </div>
+                    {text === null ? (
+                        <p className="text-xs text-muted text-center py-4">불러오는 중...</p>
+                    ) : text ? (
+                        <pre className="text-xs whitespace-pre-wrap leading-relaxed font-body">{text}</pre>
+                    ) : (
+                        <p className="text-xs text-muted text-center py-4">
+                            저장된 문서가 없어요. 홈으로 돌아가 사진을 다시 선택해주세요.
+                        </p>
+                    )}
                 </div>
 
-                <h3 className="font-display text-[15.5px]">민감한 정보 3곳을 가렸어요</h3>
+                <h3 className="font-display text-[15.5px]">민감한 정보를 가렸어요</h3>
                 <p className="text-xs text-inksoft leading-relaxed">
-                    이름, 주민번호, 계좌번호는 기기 안에서 가려졌고, 이 화면 밖으로 원문 그대로 전송되지 않아요.
+                    주민번호, 전화번호, 카드번호는 기기 안에서 가려졌고, 이 화면 밖으로 원문 그대로 전송되지 않아요.
                 </p>
 
                 <div className="flex items-center gap-1.5 text-xs font-bold text-ok bg-oksoft rounded-full px-3 py-1.5 w-fit mx-auto">

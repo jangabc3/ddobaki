@@ -1,6 +1,34 @@
+"use client";
+
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createWorker } from "tesseract.js";
+import { maskText } from "@/lib/masking";
 
 export default function HomePage() {
+    const router = useRouter();
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleFile = async (file: File) => {
+        setLoading(true);
+        try {
+            const worker = await createWorker("kor");
+            const { data } = await worker.recognize(file);
+            await worker.terminate();
+
+            const { masked } = maskText(data.text);
+            sessionStorage.setItem("ddobaki_masked_text", masked);
+
+            router.push("/confirm");
+        } catch (err) {
+            console.error(err);
+            alert("문서를 읽는 데 실패했어요. 다시 시도해주세요.");
+            setLoading(false);
+        }
+    };
+
     return (
         <main className="min-h-screen flex items-center justify-center p-6">
             <div className="w-full max-w-sm bg-white rounded-3xl p-6 flex flex-col gap-5">
@@ -27,17 +55,36 @@ export default function HomePage() {
                     <div className="h-2 rounded bg-line w-3/5" />
                 </div>
 
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleFile(file);
+                    }}
+                />
+
                 <div className="flex flex-col gap-2.5">
-                    <Link href="/confirm" className="w-full h-[50px] rounded-2xl bg-ink text-white font-bold text-sm flex items-center justify-center">
-                        사진에서 가져오기
-                    </Link>
-                    <Link href="/confirm" className="w-full h-[50px] rounded-2xl bg-white border border-line font-bold text-sm flex items-center justify-center gap-2">
+                    <button
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={loading}
+                        className="w-full h-[50px] rounded-2xl bg-ink text-white font-bold text-sm disabled:opacity-60"
+                    >
+                        {loading ? "문서를 읽는 중이에요..." : "사진에서 가져오기"}
+                    </button>
+                    <button
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={loading}
+                        className="w-full h-[50px] rounded-2xl bg-white border border-line font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
+                    >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                             <path d="M4 8H7L9 5H15L17 8H20V19H4V8Z" stroke="#14171B" strokeWidth="1.6" strokeLinejoin="round" />
                             <circle cx="12" cy="13" r="3.2" stroke="#14171B" strokeWidth="1.6" />
                         </svg>
                         카메라로 찍기
-                    </Link>
+                    </button>
                 </div>
 
                 <Link href="/history" className="flex items-center justify-between bg-white border border-line rounded-2xl px-3.5 py-3">
