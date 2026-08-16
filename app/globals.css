@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #F3F5F1;
+  --color-ink: #14171B;
+  --color-inksoft: #4B524C;
+  --color-muted: #8B9088;
+  --color-line: #E3E7E0;
+  --color-hl: #DCEB4A;
+  --color-hlsoft: #F3F8C9;
+  --color-hlwash: #F9FCE3;
+  --color-stamp: #B23A2E;
+  --color-ok: #3F7F52;
+  --color-oksoft: #E6F1E4;
+
+  --font-body: "Noto Sans KR", sans-serif;
+  --font-display: "Song Myung", serif;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
