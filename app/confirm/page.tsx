@@ -1,15 +1,38 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function ConfirmPage() {
+    const router = useRouter();
     const [text, setText] = useState<string | null>(null);
+    const [sending, setSending] = useState(false);
 
     useEffect(() => {
         const saved = sessionStorage.getItem("ddobaki_masked_text");
         setText(saved);
     }, []);
+
+    const handleConfirm = async () => {
+        if (!text) return;
+        setSending(true);
+        try {
+            const res = await fetch("http://localhost:8080/api/explain", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ maskedText: text }),
+            });
+            if (!res.ok) throw new Error("서버 응답 오류");
+            const data = await res.json();
+            sessionStorage.setItem("ddobaki_result", JSON.stringify(data));
+            router.push("/result");
+        } catch (err) {
+            console.error(err);
+            alert("AI가 문서를 이해하는 데 실패했어요. 다시 시도해주세요.");
+            setSending(false);
+        }
+    };
 
     return (
         <main className="min-h-screen flex items-center justify-center p-6">
@@ -50,9 +73,13 @@ export default function ConfirmPage() {
                     가린 내용만 안전하게 확인해요
                 </div>
 
-                <Link href="/result" className="w-full h-[50px] rounded-2xl bg-ink text-white font-bold text-sm flex items-center justify-center">
-                    가린 내용으로 확인할게요
-                </Link>
+                <button
+                    onClick={handleConfirm}
+                    disabled={!text || sending}
+                    className="w-full h-[50px] rounded-2xl bg-ink text-white font-bold text-sm disabled:opacity-60"
+                >
+                    {sending ? "AI가 읽고 있어요..." : "가린 내용으로 확인할게요"}
+                </button>
                 <Link href="/home" className="text-xs text-inksoft font-semibold text-center">
                     사진을 다시 선택할게요
                 </Link>
