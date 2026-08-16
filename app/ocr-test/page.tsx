@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createWorker } from "tesseract.js";
+import { maskText } from "@/lib/masking";
 
 export default function OcrTestPage() {
     const [text, setText] = useState("");
@@ -15,7 +16,9 @@ export default function OcrTestPage() {
 
         const worker = await createWorker("kor+eng");
         const { data } = await worker.recognize(file);
-        setText(data.text);
+        const result = maskText(data.text);
+        setText(result.masked);
+        console.log("발견된 민감정보:", result.found);
         await worker.terminate();
         setLoading(false);
     };
@@ -23,7 +26,17 @@ export default function OcrTestPage() {
     return (
         <main className="min-h-screen p-6 flex flex-col items-center gap-4">
             <h1 className="font-display text-2xl">OCR 테스트</h1>
-
+            <button
+                onClick={() => {
+                    const sample = "제 주민번호는 901231-1234567이고 전화번호는 010-1234-5678이에요. 카드번호 1234-5678-9012-3456도 있어요.";
+                    const result = maskText(sample);
+                    setText(result.masked);
+                    console.log("발견:", result.found);
+                }}
+                className="text-xs underline text-inksoft"
+            >
+                가짜 데이터로 마스킹 테스트
+            </button>
             <input
                 type="file"
                 accept="image/*"
