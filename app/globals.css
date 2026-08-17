@@ -22,3 +22,11 @@ body {
   color: var(--color-ink);
   font-family: var(--font-body);
 }
+
+/* 글자 크기 조절 — main 태그 전체를 확대해서, 글자뿐 아니라 버튼/간격까지 같이 커져요 */
+html[data-text-scale="large"] main {
+  zoom: 1.15;
+}
+html[data-text-scale="xlarge"] main {
+  zoom: 1.3;
+}

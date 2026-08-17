@@ -5,6 +5,7 @@ import java.util.List;
 public record ExplainResponse(
         String summary,
         String dueDate,
-        String amount,
+        String dueDateIso,
+        String actionText,
         List<String> evidenceSentences) {
 }
