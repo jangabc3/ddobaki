@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { clearHistory } from "@/lib/history";
 import { TEXT_SCALE_LEVELS, TextScaleLevel, applyTextScale } from "@/components/FontSizeToggle";
 
 const LEVEL_LABEL: Record<TextScaleLevel, string> = {
@@ -22,12 +21,6 @@ export default function SettingsPage() {
     const handleSelectLevel = (next: TextScaleLevel) => {
         setLevel(next);
         applyTextScale(next);
-    };
-
-    const handleClearHistory = () => {
-        if (!confirm("모든 기록을 지울까요? 되돌릴 수 없어요.")) return;
-        clearHistory();
-        alert("기록을 전부 지웠어요.");
     };
 
     return (
@@ -91,9 +84,6 @@ export default function SettingsPage() {
                             어려운 안내문을 안전하게, 쉬운 말로 풀어드리는 서비스예요.<br />
                             버전 0.1
                         </p>
-                        <button onClick={handleClearHistory} className="text-[10.5px] text-muted underline mt-3">
-                            기록 전체 삭제
-                        </button>
                     </div>
                 </div>
             </div>
