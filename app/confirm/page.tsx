@@ -19,7 +19,7 @@ export default function ConfirmPage() {
         if (!text) return;
         setSending(true);
         try {
-            const res = await fetch("http://localhost:8080/api/explain", {
+            const res = await fetch("https://ddobaki-production.up.railway.app/api/explain", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ maskedText: text }),
