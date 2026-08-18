@@ -24,9 +24,12 @@ body {
 }
 
 /* 글자 크기 조절 — main 태그 전체를 확대해서, 글자뿐 아니라 버튼/간격까지 같이 커져요 */
+/* zoom은 Firefox에서 지원하지 않아 transform: scale()로 대체 (모든 브라우저 호환) */
 html[data-text-scale="large"] main {
-  zoom: 1.15;
+  transform: scale(1.09);
+  transform-origin: top center;
 }
 html[data-text-scale="xlarge"] main {
-  zoom: 1.3;
+  transform: scale(1.18);
+  transform-origin: top center;
 }
