@@ -331,8 +331,8 @@ export default function HomePage() {
                         <div className="flex items-center gap-3 bg-white border border-line rounded-2xl p-3.5">
                             <div className="w-9 h-9 rounded-lg bg-hlwash flex items-center justify-center flex-shrink-0">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                    <circle cx="12" cy="12" r="5" stroke="#14171B" strokeWidth="1.6" />
-                                    <path d="M12 2V4M12 20V22M22 12H20M4 12H2" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" />
+                                    <circle cx="12" cy="12" r="4.2" stroke="#14171B" strokeWidth="1.6" />
+                                    <path d="M12 3.5V6M12 18V20.5M20.5 12H18M6 12H3.5M17.3 6.7L15.6 8.4M8.4 15.6L6.7 17.3M17.3 17.3L15.6 15.6M8.4 8.4L6.7 6.7" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" />
                                 </svg>
                             </div>
                             <p className="text-sm font-semibold">밝은 곳에서 찍어주세요</p>
@@ -340,7 +340,8 @@ export default function HomePage() {
                         <div className="flex items-center gap-3 bg-white border border-line rounded-2xl p-3.5">
                             <div className="w-9 h-9 rounded-lg bg-hlwash flex items-center justify-center flex-shrink-0">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                    <rect x="4" y="6" width="16" height="12" rx="1" stroke="#14171B" strokeWidth="1.6" />
+                                    <rect x="4.5" y="6" width="15" height="12" rx="1.5" stroke="#14171B" strokeWidth="1.6" />
+                                    <path d="M7.5 12H16.5" stroke="#14171B" strokeWidth="1.4" strokeLinecap="round" />
                                 </svg>
                             </div>
                             <p className="text-sm font-semibold">종이를 평평하게 펴주세요</p>
@@ -348,7 +349,8 @@ export default function HomePage() {
                         <div className="flex items-center gap-3 bg-white border border-line rounded-2xl p-3.5">
                             <div className="w-9 h-9 rounded-lg bg-hlwash flex items-center justify-center flex-shrink-0">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                    <path d="M9 9H4V4M15 15H20V20" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path d="M9 4H5C4.44772 4 4 4.44772 4 5V9" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path d="M15 20H19C19.5523 20 20 19.5523 20 19V15" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </div>
                             <p className="text-sm font-semibold">여러 장이 겹쳐 있으면, 필요한 부분만 확대해서 찍어주세요</p>
@@ -518,16 +520,11 @@ export default function HomePage() {
                 <div className="flex items-center justify-between">
                     <div className="font-display text-xl">또박이</div>
                     <Link href="/settings" className="w-9 h-9 rounded-full bg-hlwash flex items-center justify-center">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="3.2" stroke="#14171B" strokeWidth="1.6" />
-                            <circle cx="12" cy="4.5" r="1.3" fill="#14171B" />
-                            <circle cx="12" cy="19.5" r="1.3" fill="#14171B" />
-                            <circle cx="4.5" cy="12" r="1.3" fill="#14171B" />
-                            <circle cx="19.5" cy="12" r="1.3" fill="#14171B" />
-                            <circle cx="7.05" cy="7.05" r="1.3" fill="#14171B" />
-                            <circle cx="16.95" cy="16.95" r="1.3" fill="#14171B" />
-                            <circle cx="7.05" cy="16.95" r="1.3" fill="#14171B" />
-                            <circle cx="16.95" cy="7.05" r="1.3" fill="#14171B" />
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 7H14M18 7H20" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" />
+                            <circle cx="16" cy="7" r="2" stroke="#14171B" strokeWidth="1.6" />
+                            <path d="M4 17H6M10 17H20" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" />
+                            <circle cx="8" cy="17" r="2" stroke="#14171B" strokeWidth="1.6" />
                         </svg>
                     </Link>
                 </div>
@@ -561,8 +558,8 @@ export default function HomePage() {
                     <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-lg bg-hlwash flex items-center justify-center">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                <path d="M9 12L11 14L15.5 9.2" stroke="#14171B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                                <circle cx="12" cy="12" r="9" stroke="#14171B" strokeWidth="1.4" />
+                                <path d="M9 12L11 14L15.5 9.2" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                                <circle cx="12" cy="12" r="9" stroke="#14171B" strokeWidth="1.6" />
                             </svg>
                         </div>
                         <div>
@@ -573,7 +570,7 @@ export default function HomePage() {
                         </div>
                     </div>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                        <path d="M9 6L15 12L9 18" stroke="#8B9088" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M9 6L15 12L9 18" stroke="#8B9088" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </Link>
 
