@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Viewport } from "next";
+import { ToastProvider } from "@/components/Toast";
 
 export const metadata = {
   title: "또박이",
@@ -23,7 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <ToastProvider>{children}</ToastProvider>
+      </body>
     </html>
   );
 }

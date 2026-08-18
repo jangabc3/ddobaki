@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useToast } from "@/components/Toast";
 
 export default function ConfirmPage() {
     const router = useRouter();
+    const { showToast } = useToast();
     const [text, setText] = useState<string | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [sending, setSending] = useState(false);
@@ -25,7 +27,7 @@ export default function ConfirmPage() {
                 body: JSON.stringify({ maskedText: text }),
             });
             if (!res.ok) {
-                alert("지금은 AI가 답을 주지 못했어요. 잠시 후 다시 시도해주세요.");
+                showToast("지금은 AI가 답을 주지 못했어요. 잠시 후 다시 시도해주세요.");
                 setSending(false);
                 return;
             }
@@ -36,9 +38,9 @@ export default function ConfirmPage() {
         } catch (err) {
             console.error(err);
             if (err instanceof TypeError) {
-                alert("인터넷 연결을 확인해주세요. 와이파이나 데이터가 꺼져있지 않은지 봐주세요.");
+                showToast("인터넷 연결을 확인해주세요. 와이파이나 데이터가 꺼져있지 않은지 봐주세요.");
             } else {
-                alert("문제가 생겼어요. 잠시 후 다시 시도해주세요.");
+                showToast("문제가 생겼어요. 잠시 후 다시 시도해주세요.");
             }
             setSending(false);
         }
