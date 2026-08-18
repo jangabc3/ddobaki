@@ -44,3 +44,7 @@ next-env.d.ts
 backend/target/
 backend/.mvn/
 backend/src/main/resources/application.properties
+
+# ai agents
+AGENTS.md
+CLAUDE.md
