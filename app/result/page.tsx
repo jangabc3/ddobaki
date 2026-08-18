@@ -14,6 +14,7 @@ type ExplainResult = {
 
 export default function ResultPage() {
     const [result, setResult] = useState<ExplainResult | null>(null);
+    const [showEvidence, setShowEvidence] = useState(false);
     const savedHistoryRef = useRef(false);
 
     useEffect(() => {
@@ -40,7 +41,7 @@ export default function ResultPage() {
             <main className="min-h-screen flex items-center justify-center p-6">
                 <div className="w-full max-w-sm bg-white rounded-3xl p-6 flex flex-col gap-4">
                     <div className="flex items-center justify-center relative">
-                        <Link href="/confirm" className="absolute left-0">
+                        <Link href="/home" className="absolute left-0">
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
                                 <path d="M15 5L8 12L15 19" stroke="#14171B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
@@ -59,7 +60,7 @@ export default function ResultPage() {
         <main className="min-h-screen flex items-center justify-center p-6">
             <div className="w-full max-w-sm bg-white rounded-3xl p-6 flex flex-col gap-4">
                 <div className="flex items-center justify-center relative">
-                    <Link href="/confirm" className="absolute left-0">
+                    <Link href="/home" className="absolute left-0">
                         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
                             <path d="M15 5L8 12L15 19" stroke="#14171B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -94,22 +95,46 @@ export default function ResultPage() {
                 })()}
 
                 <div className="bg-white border border-line rounded-2xl p-3.5">
-                    <div className="flex items-center gap-1.5 mb-2">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                            <path d="M4 20L14 10L18 14L8 24" stroke="#B23A2E" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M14 10L17 4L20 7L18 14" stroke="#B23A2E" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    <button
+                        onClick={() => setShowEvidence((v) => !v)}
+                        className="w-full flex items-center justify-between"
+                    >
+                        <div className="flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                <circle cx="10.5" cy="10.5" r="6.5" stroke="#14171B" strokeWidth="1.6" />
+                                <path d="M15.5 15.5L20 20" stroke="#14171B" strokeWidth="1.6" strokeLinecap="round" />
+                            </svg>
+                            <span className="text-xs font-bold text-inksoft">원문 근거 보기</span>
+                        </div>
+                        <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            className={"transition-transform " + (showEvidence ? "rotate-180" : "")}
+                        >
+                            <path d="M6 9L12 15L18 9" stroke="#8A8F98" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
-                        <span className="text-xs font-bold text-inksoft">또박이가 형광펜으로 표시해준 문장</span>
-                    </div>
-                    <ul className="flex flex-col gap-1.5">
-                        {result.evidenceSentences.map(function (sentence, i) {
-                            return (
-                                <li key={i} className="text-xs text-inksoft bg-hlwash rounded-lg px-2.5 py-1.5 leading-relaxed">
-                                    {sentence}
-                                </li>
-                            );
-                        })}
-                    </ul>
+                    </button>
+
+                    {showEvidence && (
+                        <div className="mt-2.5">
+                            <p className="text-[10.5px] text-muted mb-2 leading-relaxed">
+                                AI가 지어낸 말이 아니라, 문서 원문에 실제로 있는 부분만 그대로 옮겨왔어요.
+                            </p>
+                            <ul className="flex flex-col gap-1.5">
+                                {result.evidenceSentences.map(function (sentence, i) {
+                                    return (
+                                        <li key={i} className="text-xs text-inksoft bg-hlwash rounded-lg px-2.5 py-1.5 leading-relaxed">
+                                            <span className="text-muted mr-0.5">“</span>
+                                            {sentence}
+                                            <span className="text-muted ml-0.5">”</span>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs font-bold text-ok bg-oksoft rounded-full px-3 py-1.5 w-fit mx-auto">
