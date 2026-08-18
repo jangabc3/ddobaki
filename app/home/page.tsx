@@ -6,6 +6,7 @@ import Link from "next/link";
 import { createWorker } from "tesseract.js";
 import { maskText } from "@/lib/masking";
 import { getHistory, countThisMonth } from "@/lib/history";
+import { useToast } from "@/components/Toast";
 
 type Rect = { x: number; y: number; width: number; height: number };
 type Point = { x: number; y: number };
@@ -115,6 +116,7 @@ function computeAverageBrightness(img: HTMLImageElement): number {
 
 export default function HomePage() {
     const router = useRouter();
+    const { showToast } = useToast();
     const imgRef = useRef<HTMLImageElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -155,7 +157,7 @@ export default function HomePage() {
             const brightness = computeAverageBrightness(img);
             console.log("사진 밝기(0~255):", brightness);
             if (brightness < 55) {
-                alert("사진이 너무 어두워요. 밝은 곳에서 다시 찍어주세요.");
+                showToast("사진이 너무 어두워요. 밝은 곳에서 다시 찍어주세요.");
                 URL.revokeObjectURL(url);
                 return;
             }
@@ -172,12 +174,17 @@ export default function HomePage() {
         }
     };
 
+    // 글자 크기 확대(transform: scale) 상태에서도 좌표가 어긋나지 않도록,
+    // getBoundingClientRect()의 화면상 크기가 아니라 offsetWidth/offsetHeight(스케일 미적용 크기) 기준으로 비율 환산
     const getRelativePoint = (clientX: number, clientY: number): Point => {
-        const box = containerRef.current?.getBoundingClientRect();
-        if (!box) return { x: 0, y: 0 };
+        const el = containerRef.current;
+        if (!el) return { x: 0, y: 0 };
+        const box = el.getBoundingClientRect();
+        const fracX = Math.min(Math.max((clientX - box.left) / box.width, 0), 1);
+        const fracY = Math.min(Math.max((clientY - box.top) / box.height, 0), 1);
         return {
-            x: Math.min(Math.max(clientX - box.left, 0), box.width),
-            y: Math.min(Math.max(clientY - box.top, 0), box.height),
+            x: fracX * el.offsetWidth,
+            y: fracY * el.offsetHeight,
         };
     };
 
@@ -227,7 +234,7 @@ export default function HomePage() {
 
             const CONFIDENCE_THRESHOLD = 45;
             if (data.confidence < CONFIDENCE_THRESHOLD) {
-                alert("사진이 잘 안 읽혔어요. 문서를 평평하게 펴고, 밝은 곳에서 필요한 부분만 크게 다시 찍어주세요.");
+                showToast("사진이 잘 안 읽혔어요. 문서를 평평하게 펴고, 밝은 곳에서 필요한 부분만 크게 다시 찍어주세요.");
                 setLoading(false);
                 setMode("home");
                 return;
@@ -239,7 +246,7 @@ export default function HomePage() {
             router.push("/confirm");
         } catch (err) {
             console.error(err);
-            alert("사진을 읽는 데 실패했어요. 사진이 흐리거나 파일이 너무 클 수 있어요. 다른 사진으로 다시 시도해주세요.");
+            showToast("사진을 읽는 데 실패했어요. 사진이 흐리거나 파일이 너무 클 수 있어요. 다른 사진으로 다시 시도해주세요.");
             setLoading(false);
             setMode("home");
         }
@@ -250,11 +257,14 @@ export default function HomePage() {
     const handleConfirmCrop = async () => {
         if (!imgRef.current || !naturalSize || !containerRef.current || !dragRect) return;
         if (dragRect.width < 20 || dragRect.height < 20) {
-            alert("선택한 영역이 너무 작아요. 좀 더 크게 그려주세요.");
+            showToast("선택한 영역이 너무 작아요. 좀 더 크게 그려주세요.");
             return;
         }
-        const box = containerRef.current.getBoundingClientRect();
-        const natural = scaleRectToNatural(dragRect, { width: box.width, height: box.height }, naturalSize);
+        const natural = scaleRectToNatural(
+            dragRect,
+            { width: containerRef.current.offsetWidth, height: containerRef.current.offsetHeight },
+            naturalSize
+        );
         const blob = await cropImageToBlob(imgRef.current, natural);
         const newUrl = URL.createObjectURL(blob);
         if (imgUrl) URL.revokeObjectURL(imgUrl);
@@ -264,9 +274,8 @@ export default function HomePage() {
 
     const handleFinishMasking = async () => {
         if (!imgRef.current || !naturalSize || !containerRef.current) return;
-        const box = containerRef.current.getBoundingClientRect();
-        const scaleX = naturalSize.width / box.width;
-        const scaleY = naturalSize.height / box.height;
+        const scaleX = naturalSize.width / containerRef.current.offsetWidth;
+        const scaleY = naturalSize.height / containerRef.current.offsetHeight;
 
         const strokesNatural = maskStrokes.map((stroke) => ({
             points: stroke.map((p) => ({ x: p.x * scaleX, y: p.y * scaleY })),
